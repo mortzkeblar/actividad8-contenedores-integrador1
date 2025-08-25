@@ -2,6 +2,36 @@
 
 Este proyecto tiene como objetivo desplegar un entorno compuesto por **Redmine** escalado a múltiples réplicas, detrás de un **balanceador de carga (Traefik)**, junto con servicios adicionales como **Maildev** y **phpMyAdmin**. 
 
+``` mermaid
+graph LR
+    subgraph Traefik ["Traefik Load Balancer"]
+        traefik[Traefik v3.5.0]
+    end
+
+    subgraph Redmine["Redmine Cluster"]
+        redmine1[Redmine Replica 1]
+        redmine2[Redmine Replica 2]
+        redmine3[Redmine Replica 3]
+    end
+
+    db[(MySQL v8.0)]
+    maildev[Maildev v2.2.1]
+    phpmyadmin[phpMyAdmin v5.2-fpm]
+
+    traefik -->|HTTPS| redmine1
+    traefik -->|HTTPS| redmine2
+    traefik -->|HTTPS| redmine3
+    traefik -->|HTTPS| maildev
+    traefik -->|HTTPS| phpmyadmin
+
+    redmine1 -->|DB connection| db
+    redmine2 -->|DB connection| db
+    redmine3 -->|DB connection| db
+    phpmyadmin -->|DB connection| db
+
+```
+
+
 ### Objetivos
 - Correr Redmine con más de una réplica.
 - Resolver el manejo de sesiones al tener múltiples instancias de Redmine.
