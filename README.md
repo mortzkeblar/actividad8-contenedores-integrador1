@@ -10,19 +10,18 @@ Este proyecto tiene como objetivo desplegar un entorno compuesto por **Redmine**
   - Redmine
   - Maildev
   - phpMyAdmin
-- Configurar el acceso por HTTPS 
-- Utilizar nombres `.localhost` basada en la resolución que proporciona
-  [systemd-resolved](https://man.archlinux.org/man/systemd-resolved.8)
+- Configurar el acceso por HTTPS (con certificados auto-firmados)
+- Utilizar dominios `.localhost` basada en la resolución de nombres que proporciona [systemd-resolved](https://man.archlinux.org/man/systemd-resolved.8)
 
 ### Servicios
 
 El `docker-compose.yml` incluye:
 
-- **Redmine**: desplegado con 3 réplicas.  
-- **MySQL**: base de datos para Redmine.  
-- **Maildev**: para pruebas de correo.  
-- **phpMyAdmin**: herramienta de administración de MySQL.  
-- **Traefik**: balanceador de carga y proxy inverso, configurado para integrarse con Docker.
+- **Redmine** `v6.0.6`: desplegado con 3 réplicas, configurable desde la configuración del compose
+- **MySQL** `v8.0`: base de datos para Redmine.  
+- **Maildev** `v2.2.1`: para pruebas de correo.  
+- **phpMyAdmin** `v5.2-fpm`: herramienta gráfica para la administración de la base de datos  
+- **Traefik** `v3.5.0`: balanceador de carga y proxy inverso escrito en Go, configurado para integrarse con Docker.
 
 ### Archivos de importancia
 
@@ -42,7 +41,7 @@ El `docker-compose.yml` incluye:
 
 Luego de iniciado los servicios, se pueden acceder a las siguientes URLs:
 - Panel de administración de Traefik: `http://localhost:7070`
-- Redmine (detras de nginx): `http://integrador-redmine.localhost`
-- phpMyAdmin: `http://phpmyadmin-integrador.localhost`
-- Maildev: `http://maildev-integrador.localhost`
+- Redmine (detras de nginx): `https://redmine.localhost`
+- phpMyAdmin: `https://pma.localhost`
+- Maildev: `https://maildev.localhost`
 

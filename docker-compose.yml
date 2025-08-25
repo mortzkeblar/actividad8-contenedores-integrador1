@@ -29,7 +29,7 @@ services:
       - db:/var/lib/mysql
   
   maildev:
-    image: maildev/maildev
+    image: maildev/maildev:2.2.1
     restart: always
     ports:
       - 1080:1080
@@ -41,12 +41,11 @@ services:
       - "traefik.http.routers.maildev.tls=true"
       - "traefik.http.services.maildev.loadbalancer.server.port=1080" 
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin:5.2-fpm
     restart: always
     ports:
       - 7071:80
     environment:
-      PMA_ARBITRARY: '1'
       PMA_HOST: db
     labels:
       - "traefik.enable=true"
@@ -54,7 +53,6 @@ services:
       - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.phpmyadmin.tls=true"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
-
 
   traefik:
     image: traefik:3.5.0
