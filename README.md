@@ -25,21 +25,22 @@ graph LR
 		db[(MySQL v8.0)]
 	end
 
-	traefik -->|HTTP internal| secret
+	traefik -->|HTTP internal - TCP/3000| secret
 	secret --> redmine1
 	secret --> redmine2
 	secret --> redmine3
-	traefik -->|HTTP internal| maildev
-	traefik -->|HTTP internal| phpmyadmin
+	traefik -->|HTTP internal - TCP/1080| maildev
+	traefik -->|HTTP internal - TCP/80| phpmyadmin
 
-	redmine1 -->|DB connection| db
-	redmine2 -->|DB connection| db
-	redmine3 -->|DB connection| db
-	phpmyadmin -->|DB connection| db
+	redmine1 -->|DB connection - TCP/3306| db
+	redmine2 -->|DB connection - TCP/3306| db
+	redmine3 -->|DB connection - TCP/3306| db
+	phpmyadmin -->|DB connection - TCP/3306| db
+	
+	redmine1 -->|Email notifications - TCP/1025| maildev
+	redmine2 -->|Email notifications - TCP/1025| maildev
+	redmine3 -->|Email notifications - TCP 1025| maildev
 
-    redmine1 -->|Email notifications| maildev
-	redmine2 -->|Email notifications| maildev
-	redmine3 -->|Email notifications| maildev
 ```
 
 ### Objetivos
