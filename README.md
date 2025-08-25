@@ -10,8 +10,9 @@ Este proyecto tiene como objetivo desplegar un entorno compuesto por **Redmine**
   - Redmine
   - Maildev
   - phpMyAdmin
-- Configurar acceso HTTPS con certificados inválidos y diferentes hostnames.
-- Utilizar nombres `.localhost` para pruebas locales (ejemplo: `redmine.localhost`, `mail.localhost`, `pma.localhost`).
+- Configurar el acceso por HTTPS 
+- Utilizar nombres `.localhost` basada en la resolución que proporciona
+  [systemd-resolved](https://man.archlinux.org/man/systemd-resolved.8)
 
 ### Servicios
 
@@ -44,3 +45,4 @@ Luego de iniciado los servicios, se pueden acceder a las siguientes URLs:
 - Redmine (detras de nginx): `http://integrador-redmine.localhost`
 - phpMyAdmin: `http://phpmyadmin-integrador.localhost`
 - Maildev: `http://maildev-integrador.localhost`
+
