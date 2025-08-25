@@ -1,0 +1,50 @@
+services:
+
+  redmine:
+    build: .
+    restart: always
+    environment:
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: example
+      SECRET_KEY_BASE: supersecretkey
+      #REDMINE_PLUGINS_MIGRATE: true
+    volumes:
+      - ./datos:/usr/src/redmine/files
+    deploy:
+      replicas: 3
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: redmine
+    volumes:
+      - db:/var/lib/mysql
+  
+  maildev:
+    image: maildev/maildev
+    restart: always
+    ports:
+      - 1080:1080
+      - 1025:1025
+  
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 7071:80
+    environment:
+      PMA_ARBITRARY: '1'
+      PMA_HOST: db
+
+  traefik:
+    image: traefik:3.5.0
+    ports:
+      - 80:80 
+      - 7070:8080
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+volumes:
+  db:

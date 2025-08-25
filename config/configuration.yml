@@ -1,0 +1,18 @@
+production:
+  email_delivery:
+    delivery_method: :smtp
+    smtp_settings:
+      address: maildev
+      port: 1025
+      domain: "localhost"
+      enable_starttls_auto: false
+
+development:
+  email_delivery:
+    delivery_method: :smtp
+    smtp_settings:
+      address: maildev
+      port: 1025
+      domain: "localhost"
+      enable_starttls_auto: false
+
