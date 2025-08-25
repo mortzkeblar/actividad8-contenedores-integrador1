@@ -33,7 +33,12 @@ El `docker-compose.yml` incluye:
 ### Uso
 
 1. Clonar este repositorio.
-2. Levantar los servicios:
+2. Generamos las variables necesarias para los servicios 
+	 ``` sh
+	 openssl rand -hex 64 > .secrets/redmine_secret_key_base
+	 echo 'superdbpassword' > .secrets/mysql_root_password
+	 ```
+3. Ejecutamos los servicios
 
 	```bash
    docker compose up -d --build
@@ -44,4 +49,11 @@ Luego de iniciado los servicios, se pueden acceder a las siguientes URLs:
 - Redmine (detras de nginx): `https://redmine.localhost`
 - phpMyAdmin: `https://pma.localhost`
 - Maildev: `https://maildev.localhost`
+
+
+### Certificados auto-firmados
+Los servicios HTTPS usan **certificados auto-firmados**, por lo que los navegadores muestran advertencias de seguridad al acceder a `https://redmine.localhost`, `https://pma.localhost` o `https://maildev.localhost`. Para continuar, aceptar la excepción de seguridad del navegador. 
+
+![](.images/warningselfcert.png)
+
 
