@@ -37,6 +37,9 @@ graph LR
 	redmine3 -->|DB connection| db
 	phpmyadmin -->|DB connection| db
 
+    redmine1 -->|Email notifications| maildev
+	redmine2 -->|Email notifications| maildev
+	redmine3 -->|Email notifications| maildev
 ```
 
 ### Objetivos
