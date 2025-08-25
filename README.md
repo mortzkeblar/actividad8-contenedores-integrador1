@@ -1,4 +1,4 @@
-## Actividad Integradora - Contenedores (Mikroways)
+## 008 Fundamentos de contenedores - Actividad Integradora (Mikroways)
 
 Este proyecto tiene como objetivo desplegar un entorno compuesto por **Redmine** escalado a múltiples réplicas, detrás de un **balanceador de carga (Traefik)**, junto con servicios adicionales como **Maildev** y **phpMyAdmin**. 
 
@@ -35,9 +35,9 @@ El `docker-compose.yml` incluye:
 1. Clonar este repositorio.
 2. Levantar los servicios:
 
-    ```bash
-    docker compose up -d --build
-    ```
+	```bash
+   docker compose up -d --build
+   ```
 
 Luego de iniciado los servicios, se pueden acceder a las siguientes URLs:
 - Panel de administración de Traefik: `http://localhost:7070`
