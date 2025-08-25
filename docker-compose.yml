@@ -5,13 +5,16 @@ services:
     restart: always
     environment:
       REDMINE_DB_MYSQL: db
-      REDMINE_DB_PASSWORD: example
-      SECRET_KEY_BASE: supersecretkey
+      REDMINE_DB_PASSWORD_FILE: /run/secrets/mysql_root_password
+      REDMINE_SECRET_KEY_BASE_FILE: /run/secrets/redmine_secret_key_base
       #REDMINE_PLUGINS_MIGRATE: true
     volumes:
       - ./datos:/usr/src/redmine/files
     deploy:
       replicas: 3
+    secrets:
+      - mysql_root_password
+      - redmine_secret_key_base
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.redmine.rule=Host(`redmine.localhost`)"
@@ -23,10 +26,12 @@ services:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
       MYSQL_DATABASE: redmine
     volumes:
       - db:/var/lib/mysql
+    secrets:
+      - mysql_root_password
   
   maildev:
     image: maildev/maildev:2.2.1
@@ -64,5 +69,12 @@ services:
       - ./traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock
       - ./certs:/etc/traefik/certs
+
+secrets:
+  mysql_root_password:
+    file: .secrets/mysql_root_password
+  redmine_secret_key_base:
+    file: .secrets/redmine_secret_key_base
+
 volumes:
   db:
