@@ -3,9 +3,29 @@
 # Docker configuration backend
 providers:
   docker:
-    defaultRule: "Host(`{{ trimPrefix `/` .Name }}.localhost`)"
+    exposedByDefault: false
+    #defaultRule: "Host(`{{ trimPrefix `/` .Name }}.localhost`)"
 
 # API and dashboard configuration
 api:
   insecure: true
 
+entryPoints:
+  web:
+    address: :80
+    # Redirect all HTTP to HTTPS
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: :443
+
+
+tls:
+  certificates:
+    - certFile: /etc/traefik/certs/selfsigned.crt
+      keyFile: /etc/traefik/certs/selfsigned.key
+      stores:
+        - default

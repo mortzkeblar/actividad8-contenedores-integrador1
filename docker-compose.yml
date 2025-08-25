@@ -12,6 +12,12 @@ services:
       - ./datos:/usr/src/redmine/files
     deploy:
       replicas: 3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.redmine.rule=Host(`redmine.localhost`)"
+      - "traefik.http.routers.redmine.entrypoints=websecure"
+      - "traefik.http.routers.redmine.tls=true"
+      - "traefik.http.services.redmine.loadbalancer.server.port=3000"
 
   db:
     image: mysql:8.0
@@ -28,7 +34,12 @@ services:
     ports:
       - 1080:1080
       - 1025:1025
-  
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.maildev.rule=Host(`maildev.localhost`)"
+      - "traefik.http.routers.maildev.entrypoints=websecure"
+      - "traefik.http.routers.maildev.tls=true"
+      - "traefik.http.services.maildev.loadbalancer.server.port=1080" 
   phpmyadmin:
     image: phpmyadmin
     restart: always
@@ -37,14 +48,23 @@ services:
     environment:
       PMA_ARBITRARY: '1'
       PMA_HOST: db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`pma.localhost`)"
+      - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
+      - "traefik.http.routers.phpmyadmin.tls=true"
+      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+
 
   traefik:
     image: traefik:3.5.0
     ports:
-      - 80:80 
+      - 80:80
+      - 443:443 
       - 7070:8080
     volumes:
       - ./traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./certs:/etc/traefik/certs
 volumes:
   db:
